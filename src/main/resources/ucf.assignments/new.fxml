@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="859.0" prefWidth="750.0" style="-fx-background-color: #42A5F5;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.Tracker">
+    <children>
+        <Label layoutX="183.0" layoutY="14.0" text="Inventory Tracker App" textFill="WHITE">
+            <font>
+                <Font name="Century Gothic" size="36.0" />
+            </font>
+        </Label>
+        <TextField fx:id="name" layoutX="216.0" layoutY="74.0" prefHeight="25.0" prefWidth="317.0" promptText="Enter Item Name">
+            <font>
+                <Font name="Century Gothic Bold" size="20.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="itemSerialNumber" layoutX="216.0" layoutY="127.0" prefHeight="25.0" prefWidth="317.0" promptText="Enter Item Serial Number">
+            <font>
+                <Font name="Century Gothic Bold" size="20.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="itemValue" layoutX="216.0" layoutY="179.0" prefHeight="25.0" prefWidth="317.0" promptText="Enter Item Value">
+            <font>
+                <Font name="Century Gothic Bold" size="20.0" />
+            </font>
+        </TextField>
+        <ImageView fitHeight="71.0" fitWidth="82.0" layoutX="552.0" layoutY="111.0" onMouseClicked="#addItem" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../icons/baseline_add_circle_outline_white_48dp.png" />
+            </image>
+        </ImageView>
+        <Line endX="332.0" layoutX="244.0" layoutY="244.0" startX="-72.0" stroke="#fff9f9" />
+        <ImageView fitHeight="83.0" fitWidth="83.0" layoutX="43.0" layoutY="728.0" onMouseClicked="#editItem" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../icons/baseline_edit_white_48dp.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="83.0" fitWidth="83.0" layoutX="420.0" layoutY="728.0" onMouseClicked="#saveItems" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../icons/baseline_favorite_border_white_48dp.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="83.0" fitWidth="83.0" layoutX="218.0" layoutY="728.0" onMouseClicked="#deleteItem" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../icons/baseline_remove_circle_outline_white_48dp.png" />
+            </image>
+        </ImageView>
+        <Label layoutX="53.0" layoutY="811.0" text="Edit Item" textFill="WHITE">
+            <font>
+                <Font name="Century Gothic" size="15.0" />
+            </font>
+        </Label>
+        <Label layoutX="217.0" layoutY="811.0" text="Delete Item" textFill="WHITE">
+            <font>
+                <Font name="Century Gothic" size="15.0" />
+            </font>
+        </Label>
+        <Label layoutX="422.0" layoutY="811.0" text="Save Items" textFill="WHITE">
+            <font>
+                <Font name="Century Gothic" size="15.0" />
+            </font>
+        </Label>
+        <AnchorPane layoutX="-1.0" layoutY="268.0" prefHeight="118.0" prefWidth="750.0" style="-fx-background-color: #d81b60;">
+            <children>
+                <TextField fx:id="searchItem" layoutX="45.0" layoutY="37.0" prefHeight="39.0" prefWidth="417.0" promptText="Enter Search Key">
+                    <font>
+                        <Font name="Century Gothic Bold" size="20.0" />
+                    </font>
+                </TextField>
+                <RadioButton fx:id="nameRadio" layoutX="481.0" layoutY="14.0" mnemonicParsing="false" selected="true" text="Search By Name" textFill="WHITE">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="searchOption" />
+                    </toggleGroup>
+                    <font>
+                        <Font name="Century Gothic" size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="serialRadio" layoutX="481.0" layoutY="45.0" mnemonicParsing="false" text="Search By Serial Number" textFill="WHITE" toggleGroup="$searchOption">
+                    <font>
+                        <Font name="Century Gothic" size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="valueRadio" layoutX="482.0" layoutY="77.0" mnemonicParsing="false" text="Search By Value" textFill="WHITE" toggleGroup="$searchOption">
+                    <font>
+                        <Font name="Century Gothic" size="18.0" />
+                    </font>
+                </RadioButton>
+            </children>
+        </AnchorPane>
+        <TableView fx:id="itemListView" layoutX="29.0" layoutY="416.0" prefHeight="296.0" prefWidth="691.0" style="-fx-background-color: WHITE;">
+            <columns>
+                <TableColumn fx:id="colName" prefWidth="197.0" text="Name" />
+                <TableColumn fx:id="colSerial" prefWidth="342.0" text="Serial Number" />
+                <TableColumn fx:id="colValue" minWidth="0.0" prefWidth="151.0" text="Value" />
+            </columns>
+            <effect>
+                <Glow />
+            </effect>
+        </TableView>
+        <ImageView fitHeight="83.0" fitWidth="83.0" layoutX="623.0" layoutY="728.0" onMouseClicked="#loadItems" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../icons/load.png" />
+            </image>
+        </ImageView>
+        <Label layoutX="625.0" layoutY="811.0" text="Load Items" textFill="WHITE">
+            <font>
+                <Font name="Century Gothic" size="15.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
