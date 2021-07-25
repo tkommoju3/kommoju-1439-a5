@@ -1,39 +1,41 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Tanushka Kommoju
+ */
+
 package ucf.assignments;
 
 import javafx.scene.control.Alert;
 
-// helper functions
 
 public class Tracker {
 
-    // show error message
 
-    public static void showIfError(String title, String text){
+    public static void showIfError(String title, String text){ // show if there's an error
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setContentText(text);
         alert.showAndWait();
     }
 
-    // show sucess messages
-    public static void showIfSuccess(String title, String text){
+
+    public static void showIfSuccess(String title, String text){ //show if it goes through
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setContentText(text);
         alert.showAndWait();
     }
 
-    // item NameChecker checks if the item description  is less than 2 and over 256
-    public static boolean nameChecker (String Name){
+
+    public static boolean itemNameChecker (String Name){ //description has to be more than 2 and less than 256
         if (Name.length() > 256 || Name.length() < 2){
             return false;
         }
         return true;
     }
 
-    // checks if the serial number is exactly 10 chars
 
-    public static boolean serialNumberLengthChecker (String serialNumber){
+    public static boolean itemSerialNumberLengthChecker (String serialNumber){ //serial no. has to be 10 characters
         if (serialNumber.length() != 10){
             return false;
         }
@@ -41,9 +43,7 @@ public class Tracker {
     }
 
 
-    // checks if serial number is alphanumerical
-
-    public static boolean serialNumberChecker (String serialNumber){
+    public static boolean itemSerialNumberChecker (String serialNumber){ //alphanumerical serial number
 
         for (int i=0; i<serialNumber.length(); i++) {
             char x = serialNumber.charAt(i);

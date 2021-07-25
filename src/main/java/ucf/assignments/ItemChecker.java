@@ -1,6 +1,10 @@
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Tanushka Kommoju
+ */
+
 package ucf.assignments;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -11,13 +15,13 @@ import java.util.ResourceBundle;
 
 public class ItemChecker implements Initializable {
     @FXML
-    TextField name;
+    TextField itemName;
 
     @FXML
-    TextField serialNumber;
+    TextField itemSerialNumber;
 
     @FXML
-    TextField price;
+    TextField itemPrice;
 
     Item item;
     Controller parent;
@@ -30,50 +34,49 @@ public class ItemChecker implements Initializable {
     public void setItem(Controller parent, Item item){
         this.parent = parent;
         this.item = item;
-        this.name.setText(item.getName());
-        this.serialNumber.setText(item.getSerialNumber());
-        this.price.setText(String.valueOf(item.getPrice()));
+        this.itemName.setText(item.getItemName());
+        this.itemSerialNumber.setText(item.getItemSerialNumber());
+        this.itemPrice.setText(String.valueOf(item.getItemPrice()));
     }
     @FXML
 
     public void updateItem() {
 
-        // trim the text to check for requirements of a item description
-
-        String description = name.getText().trim();
+        String description = itemName.getText().trim();
 
         if(description.isEmpty()){
-            Helper.showErrorAlert("Error", "Please enter item name.");
+            Tracker.showIfError("Error", "Please enter item itemName.");
             return;
         }
 
-        //check length is more than 256 length
-        if(!Helper.nameChecker(description)){
-            Helper.showErrorAlert("Error", "Min description length should be 2 \nand Max description length should be 256.");
+        //check if length is more than 256
+        if(!Tracker.itemNameChecker(description)){
+            Tracker.showIfError("Error", "Min description length should be 2 " +
+                    "\nand Max description length should be 256.");
             return;
         }
 
-        String serialNumber = serialNumber.getText().trim();
+        String itemSerialNumber = itemSerialNumber.getText().trim();
 
-        if(serialNumber.isEmpty()){
-            Helper.showErrorAlert("Error", "Please enter a valid serial number.");
+        if(itemSerialNumber.isEmpty()){
+            Tracker.showIfError("Error", "Please enter a valid serial number.");
             return;
         }
 
-        if(!Helper.serialNumberLengthChecker(serialNumber)){
-            Helper.showErrorAlert("Error", "Serial Number needs to contain 10 Characters.");
+        if(!Tracker.itemSerialNumberLengthChecker(itemSerialNumber)){
+            Tracker.showIfError("Error", "Serial Number needs to have 10 characters.");
             return;
         }
 
-        if(!Helper.serialNumberCharAndDigitChecker (serialNumber)){
-            Helper.showErrorAlert("Error", "Serial Number shall be Alphanumeric.");
+        if(!Tracker.itemSerialNumberChecker (itemSerialNumber)){
+            Tracker.showIfError("Error", "Serial Number should be alphanumeric.");
             return;
         }
 
-        String valueString = price.getText().trim();
+        String valueString = itemPrice.getText().trim();
 
         if(valueString.isEmpty()){
-            Helper.showErrorAlert("Error", "Please enter value.");
+            Tracker.showIfError("Error", "Please enter price.");
             return;
         }
 
@@ -81,30 +84,29 @@ public class ItemChecker implements Initializable {
         try{
             value = Double.parseDouble(valueString);
             if(value <= 0){
-                Helper.showErrorAlert("Error", "Please enter a value greater than zero.");
+                Tracker.showIfError("Error", "Please enter a value greater than zero.");
                 return;
             }
         }catch (NumberFormatException e){
-            Helper.showErrorAlert("Error", "You have to enter a numerical value.");
+            Tracker.showIfError("Error", "You have to enter a numerical value.");
             return;
         }
 
         Item updatedItem = new Item();
         updatedItem.setName(description);
-        updatedItem.setSerialNumber(serialNumber);
-        updatedItem.setPrice(value);
+        updatedItem.setItemSerialNumber(itemSerialNumber);
 
-        //check if the modified serial number in the edit screen duplicates any of the previously entered serial number
-        if(!updatedItem.getSerialNumber().equals(item.getSerialNumber()) && parent.getItems().contains(updatedItem)){
-            Helper.showErrorAlert("Error", "Duplicate serial number was entered.\nPlease enter a unique Serial Number");
+        //check if edited serial number matches a previously entered one
+        if(!updatedItem.getItemSerialNumber().equals(item.getItemSerialNumber())){
+            Tracker.showIfError("Error", "Duplicate serial number was entered." +
+                    "\nPlease enter a unique Serial Number");
             return;
         }
 
         item.setName(description);
-        item.setSerialNumber(serialNumber);
-        item.setPrice(value);
+        item.setItemSerialNumber(itemSerialNumber);
 
-        Stage stage = (Stage) name.getScene().getWindow();
+        Stage stage = (Stage) itemName.getScene().getWindow();
         stage.close();
     }
 }

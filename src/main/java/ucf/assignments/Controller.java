@@ -1,8 +1,9 @@
-package ucf.assignments;
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Tanushka Kommoju
+ */
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
+package ucf.assignments;
 
 import javafx.application.Platform;
 import javafx.beans.Observable;
@@ -18,19 +19,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -67,22 +58,18 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initTable();
-        //add listener for dynamic search
-        searchItem.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+        searchItem.textProperty().addListener((ObservableValue<? extends String> observable,
+                                               String oldValue, String newValue) -> {
             filter();
         });
     }
 
-    //initialize table view
     private void initTable(){
-
-        //setting each col properties
+        //set column for each property
 
         cName.setCellValueFactory(new PropertyValueFactory<Item, String>("Name"));
         cSerial.setCellValueFactory(new PropertyValueFactory<Item, String>("SerialNumber"));
-        cValue.setCellValueFactory(new PropertyValueFactory<Item, Double>("Value"));
-
-
+        cValue.setCellValueFactory(new PropertyValueFactory<Item, Double>("Price"));
 
         dataList = FXCollections.observableArrayList();
         filteredList = new FilteredList<>(dataList, p -> true);
@@ -104,8 +91,8 @@ public class Controller implements Initializable {
             Tracker.showIfError("Error", "Please enter item name.");
             return;
         }
-        //check length is less than 2 and more than 256 length
-        if(!Tracker.nameChecker(description)){
+        //check if length is less than 2 and more than 256
+        if(!Tracker.itemNameChecker(description)){
             Tracker.showIfError("Error", "Min description length is 2\nand Max description length is 256.");
             return;
         }
@@ -118,19 +105,19 @@ public class Controller implements Initializable {
             return;
         }
 
-        // check if serial number is 10 chars length
-        if(!Tracker.serialNumberLengthChecker(serialNumber)){
+        // check if serial number is 10
+        if(!Tracker.itemSerialNumberLengthChecker(serialNumber)){
             Tracker.showIfError("Error", "Serial Number needs to contain 10 Characters.");
             return;
         }
 
         //check if serial number is alphanumerical
-        if(!Tracker.serialNumberChecker (serialNumber)){
+        if(!Tracker.itemSerialNumberChecker (serialNumber)){
             Tracker.showIfError("Error", "Serial Number shall be Alphanumeric.");
             return;
         }
 
-        //if value is nor entered - show an error
+        //show an error if value is not entered
         String valueString = price.getText().trim();
         if(valueString.isEmpty()){
             Tracker.showIfError("Error", "Please enter value.");
@@ -138,11 +125,10 @@ public class Controller implements Initializable {
         }
         double value = 0;
 
-        // try ParseDouble to make sure the value is of type double
+        //value has to be double
         try{
             value = Double.parseDouble(valueString);
 
-            //if value is Double parsable but ==0 or <0 then show an error
             if(value <= 0){
                 Tracker.showIfError("Error", "Please enter value greater than zero.");
                 return;
@@ -151,34 +137,32 @@ public class Controller implements Initializable {
             Tracker.showIfError("Error", "Please enter a numerical value.");
             return;
         }
-        //set the new item
+
+        //set new item
         Item item = new Item();
         item.setName(description);
-        item.setSerialNumber(serialNumber);
-        item.setPrice(value);
+        item.setItemSerialNumber(serialNumber);
 
-        //check if we have the same serial number
+
         if(dataList.contains(item)){
-            Tracker.showIfError("Error", "You have entered a duplicate Serial Number.\nPlease enter a unique Serial Number");
+            Tracker.showIfError("Error", "You have entered a duplicate Serial Number." +
+                    "\nPlease enter a unique Serial Number");
             return;
         }
-        //check item list capacity is full
+        //check item list capacity
         if(dataList.size() >= 100){
             Tracker.showIfError("Error", "Max capacity is 100.\nYou can not add anymore inventory items.");
             return;
         }
 
-        // if all is OK add the new item
         dataList.add(item);
 
-        //clear the fields so its ready to enter new item
+        //clear to enter new item
         name.setText("");
         serialNumber.setText("");
         price.setText("");
     }
 
-
-    // show the filtered results
 
     private void filter(){
 
@@ -186,45 +170,37 @@ public class Controller implements Initializable {
 
         filteredList.setPredicate(model -> {
 
-            // if nothing in the searchKey filed show everything
             if(searchKey.isEmpty()){
                 return true;
             }
 
-            //if nameRadio button is selection look for the matching names
-            // show nothing if as we type the value does not match
-
+            //if nameRadio button is selected look for matching names
             if(nameRadio.isSelected()){
-                if(!model.getName().trim().toLowerCase().startsWith(searchKey)){
+                if(!model.getItemName().trim().toLowerCase().startsWith(searchKey)){
                     return false;
                 }
 
-                //if serialRadio button is selection look for the matching serials
-                // show nothing if as we type the value does not match
+                //if serialRadio button is selected look for the matching numbers
             }else if(serialRadio.isSelected()){
-                if(!model.getSerialNumber().trim().toLowerCase().startsWith(searchKey)){
+                if(!model.getItemSerialNumber().trim().toLowerCase().startsWith(searchKey)){
                     return false;
                 }
 
-                //if ValueRadio button is selection look for the matching values
-                // show nothing if as we type the value does not match
+                //if ValueRadio button is selected look for the matching prices
             }else if(priceRadio.isSelected()){
-                if(!String.valueOf(model.getPrice()).startsWith(searchKey)){
+                if(!String.valueOf(model.getItemPrice()).startsWith(searchKey)){
                     return false;
                 }
             }
-            // show the matched if we pass the items above
             return true;
         });
     }
 
     @FXML
-    //delete item
     public void deleteItem() {
 
-        // get the item that was selected in the list
+        // get item that was selected
         Item item = view.getSelectionModel().getSelectedItem();
-        // make sure an item  is selected
         if(item == null)
             return;
         dataList.remove(item);
@@ -232,7 +208,6 @@ public class Controller implements Initializable {
 
     @FXML
 
-    // opening a new window for the edit item page
     public void editItem() throws IOException {
 
         Item item = view.getSelectionModel().getSelectedItem();
@@ -255,244 +230,4 @@ public class Controller implements Initializable {
         view.refresh();
     }
 
-    @FXML
-    // save function
-
-    public void saveItems() {
-        // if no item to be saved then just return
-        if(dataList == null || dataList.isEmpty())
-            return;
-
-        try{
-            FileChooser fileChooser = new FileChooser();
-
-            // Set extension filters for json, txt and html
-
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Json", "*.json"),
-                    new FileChooser.ExtensionFilter("TSV", "*.txt"),
-                    new FileChooser.ExtensionFilter("html", "*.html")
-            );
-
-            // Show open file dialog
-            File file = fileChooser.showSaveDialog(name.getScene().getWindow());
-
-            if (file != null) {
-                // get the option the user has chosen
-                String extension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0);
-
-                // handle Json alert messages
-                if(extension.equals("*.json")){
-                    if(saveJson(file)){
-                        Tracker.showIfSuccess("Success","Inventory was successfully saved to a Json file");
-                    }else{
-                        Tracker.showIfError("Error","Failed to save items in Json a Json file");
-                    }
-
-                    // handle txt alert messages
-                }else if(extension.equals("*.txt")){
-                    if(saveTSV(file)){
-                        Tracker.showIfSuccess("Success","Inventory was successfully saved to a txt file");
-                    }else{
-                        Tracker.showIfError("Error","Failed to save items in Json a txt file");
-                    }
-
-                    // handle html alert messages
-                }else if(extension.equals("*.html")){
-                    if(saveHtml(file)){
-                        Tracker.showIfSuccess("Success","Inventory was successfully saved to a html file");
-                    }else{
-                        Tracker.showIfError("Error","Failed to save items in a html file");
-                    }
-                }
-            }
-        }catch (Exception e){
-            Tracker.showIfError("Error","Fail to save items");
-        }
-    }
-
-    public ObservableList<Item> getItems(){
-        return this.dataList;
-    }
-
-    //create a Gson file
-    private boolean saveJson(File file){
-        try{
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<Item>>() {}.getType();
-            Writer writer = new FileWriter(file);
-            gson.toJson(getItems(), listType, writer);
-            writer.close();
-            return true;
-        }catch (Exception e){
-            return false;
-        }
-    }
-
-    //create a TSV/text file
-    private boolean saveTSV(File file){
-        try{
-            Writer writer = new FileWriter(file);
-            PrintWriter printWriter = new PrintWriter(writer);
-            for(Item item : dataList){
-                // create a tabular format of each item
-                String row = item.getName() + "\t" + item.getSerialNumber() + "\t" + item.getPrice();
-                printWriter.println(row);
-            }
-            writer.close();
-            printWriter.close();
-
-            return true;
-        }catch (Exception e){
-            return false;
-        }
-    }
-
-    // create a HTML file
-    private boolean saveHtml(File file){
-        try{
-            Writer writer = new FileWriter(file);
-            PrintWriter printWriter = new PrintWriter(writer);
-            printWriter.println("<html><body><table>");
-
-            for(Item item : dataList){
-
-                printWriter.println("<tr>");
-                printWriter.print("<td>");
-                printWriter.print(item.getName());
-                printWriter.println("</td>");
-                printWriter.print("<td>");
-                printWriter.print(item.getSerialNumber());
-                printWriter.println("</td>");
-                printWriter.print("<td>");
-                printWriter.print(item.getPrice());
-                printWriter.println("</td>");
-                printWriter.println("</tr>");
-            }
-            printWriter.println("</table></body></html>");
-            writer.close();
-            printWriter.close();
-            return true;
-        }catch (Exception e){
-            return false;
-        }
-    }
-    @FXML
-
-    // load item function
-
-    public void loadItems() {
-        try {
-            FileChooser fileChooser = new FileChooser();
-            // Set extension filter
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Json", "*.json"),
-                    new FileChooser.ExtensionFilter("TSV", "*.txt"),
-                    new FileChooser.ExtensionFilter("html", "*.html")
-            );
-
-            // Show open file dialog
-            File file = fileChooser.showOpenDialog(name.getScene().getWindow());
-
-
-            if (file != null) {
-                String extension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0);
-                // see which file type was chosen and display the result accordingly
-
-                if(extension.equals("*.json")){
-                    List<Item> itemList = readJson(file);
-                    if(itemList != null){
-                        dataList.clear();
-                        dataList.addAll(itemList);
-                    }
-                }else if(extension.equals("*.txt")){
-                    List<Item> itemList = readTSV(file);
-                    if(itemList != null){
-                        dataList.clear();
-                        dataList.addAll(itemList);
-                    }
-                }else if(extension.equals("*.html")){
-                    List<Item> itemList = readHtml(file);
-                    if(itemList != null){
-                        dataList.clear();
-                        dataList.addAll(itemList);
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    // read Json function
-
-    private List<Item> readJson(File file){
-        try{
-            Type listOfMyClassObject = new TypeToken<ArrayList<Item>>() {}.getType();
-            Gson gson = new Gson();
-            JsonReader reader = new JsonReader(new FileReader(file));
-            List<Item> itemList = gson.fromJson(reader, listOfMyClassObject);
-            return itemList;
-        }catch (Exception e){
-            return null;
-        }
-    }
-
-    // read txt file function
-
-    private List<Item> readTSV(File file){
-        try{
-            List<Item> itemList = new ArrayList<>();
-            try (BufferedReader TSVReader = new BufferedReader(new FileReader(file))) {
-                String line = null;
-                while ((line = TSVReader.readLine()) != null) {
-
-                    // spilt the lines when we see a tab
-                    String[] lineItems = line.split("\t");
-
-                    if(lineItems.length != 3)
-                        continue;
-
-                    Item item = new Item();
-                    item.setName(lineItems[0]);
-                    item.setSerialNumber(lineItems[1]);
-                    try{
-                        item.setPrice(Double.parseDouble(lineItems[2]));
-                    }catch (Exception e){
-                        continue;
-                    }
-                    itemList.add(item);
-                }
-            } catch (Exception e) {
-                System.out.println("Something went wrong when processing your file");
-            }
-            return itemList;
-        }catch (Exception e){
-            return null;
-        }
-    }
-
-    // read HTML function
-
-    private List<Item> readHtml(File file){
-        try{
-            List<Item> itemList = new ArrayList<>();
-            Document htmlDocument = Jsoup.parse(file, null);
-            Elements elements = htmlDocument.getElementsByTag("tr");
-            for(Element element : elements){
-                Elements rows = element.getElementsByTag("td");
-                Item item = new Item();
-                try{
-                    item.setName(rows.get(0).text());
-                    item.setSerialNumber(rows.get(1).text());
-                    item.setPrice(Double.parseDouble(rows.get(2).text()));
-                }catch (Exception e){
-                    continue;
-                }
-                itemList.add(item);
-            }
-            return itemList;
-        }catch (Exception e){
-            return null;
-        }
-    }
 }

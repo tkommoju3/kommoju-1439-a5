@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="859.0" prefWidth="750.0" style="-fx-background-color: #42A5F5;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.Tracker">
+<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="859.0" prefWidth="750.0" style="-fx-background-color: #42A5F5;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.Controller">
     <children>
         <Label layoutX="183.0" layoutY="14.0" text="Inventory Tracker App" textFill="WHITE">
             <font>
@@ -25,12 +25,12 @@
                 <Font name="Century Gothic Bold" size="20.0" />
             </font>
         </TextField>
-        <TextField fx:id="itemSerialNumber" layoutX="216.0" layoutY="127.0" prefHeight="25.0" prefWidth="317.0" promptText="Enter Item Serial Number">
+        <TextField fx:id="serialNumber" layoutX="216.0" layoutY="127.0" prefHeight="25.0" prefWidth="317.0" promptText="Enter Item Serial Number">
             <font>
                 <Font name="Century Gothic Bold" size="20.0" />
             </font>
         </TextField>
-        <TextField fx:id="itemValue" layoutX="216.0" layoutY="179.0" prefHeight="25.0" prefWidth="317.0" promptText="Enter Item Value">
+        <TextField fx:id="price" layoutX="216.0" layoutY="179.0" prefHeight="25.0" prefWidth="317.0" promptText="Enter Item Value">
             <font>
                 <Font name="Century Gothic Bold" size="20.0" />
             </font>
@@ -91,18 +91,18 @@
                         <Font name="Century Gothic" size="18.0" />
                     </font>
                 </RadioButton>
-                <RadioButton fx:id="valueRadio" layoutX="482.0" layoutY="77.0" mnemonicParsing="false" text="Search By Value" textFill="WHITE" toggleGroup="$searchOption">
+                <RadioButton fx:id="priceRadio" layoutX="482.0" layoutY="77.0" mnemonicParsing="false" text="Search By Value" textFill="WHITE" toggleGroup="$searchOption">
                     <font>
                         <Font name="Century Gothic" size="18.0" />
                     </font>
                 </RadioButton>
             </children>
         </AnchorPane>
-        <TableView fx:id="itemListView" layoutX="29.0" layoutY="416.0" prefHeight="296.0" prefWidth="691.0" style="-fx-background-color: WHITE;">
+        <TableView fx:id="view" layoutX="29.0" layoutY="416.0" prefHeight="296.0" prefWidth="691.0" style="-fx-background-color: WHITE;">
             <columns>
-                <TableColumn fx:id="colName" prefWidth="197.0" text="Name" />
-                <TableColumn fx:id="colSerial" prefWidth="342.0" text="Serial Number" />
-                <TableColumn fx:id="colValue" minWidth="0.0" prefWidth="151.0" text="Value" />
+                <TableColumn fx:id="cName" prefWidth="197.0" text="Name" />
+                <TableColumn fx:id="cSerial" prefWidth="342.0" text="Serial Number" />
+                <TableColumn fx:id="cValue" minWidth="0.0" prefWidth="151.0" text="Value" />
             </columns>
             <effect>
                 <Glow />
