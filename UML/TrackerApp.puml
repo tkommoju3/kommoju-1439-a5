@@ -1,0 +1,85 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+
+class Main{
+   + {static} main()
+   + start()
+}
+
+class Item{
+ #String name
+ #String serialNumber
+ #double value
+
++Item()
++ getItemName()
++ setItemName (String name)
++ String getItemSerialNumber ()
++ setItemSerialNumber(String serialNumber)
++ getItemPrice ()
++ setItemPrice (double value)
++ equals(Object obj)
+
+}
+
+
+class Controller {
+-itemName
+-itemSerialNumber
+-itemPrice
+-searchItem
+-TableView<Item> view
+-TableColumn<Item, String> cName
+-TableColumn<Item, String> cSerial
+-TableColumn<Item, Double> cPrice
+#RadioButton nameRadio
+#RadioButton serialRadio
+#RadioButton priceRadio
+
++deleteItem()
++editItem()
++saveItems()
++getItems()
++loadItems()
+
+}
+
+
+class ItemChecker {
+
+itemName
+itemSerialNumber
+itemValue
+#Item item
+Controller parent;
++setItem(Controller parent, Item item)
++updateItem()
+
+}
+
+
+class Tracker {
++showIfError(String title, String text)
++showIfSuccess(String title, String text)
++itemNameChecker (String Name)
++itemSerialNumberLengthChecker (String serialNumber)
++itemSerialNumberChecker (String serialNumber)
+
+}
+
+
+
+javafx.Application <|-- Main
+Main -- Controller
+javafx.Initialize<|--Controller
+javafx.Initialize<|--ItemChecker
+Item<--Controller
+Item<--ItemChecker
+java.io.Serializable<|--Item
+
+Controller-ItemChecker
+Controller-- Tracker
+ItemChecker -- Tracker
+
+@enduml
