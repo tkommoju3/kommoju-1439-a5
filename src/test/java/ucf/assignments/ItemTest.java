@@ -12,19 +12,19 @@ class ItemTest {
     @Test
     void getItemName() {
 
-        String test = "test item"; //get an item name based on test
+        String test = "test"; //get an item name based on test
         item.setName(test);
         String itemDescription = item.getItemName(); //compare test and item description
-        Assertions.assertTrue(test.equals(itemDescription));
+        Assertions.assertEquals(test, itemDescription);
     }
 
     @Test
     void setItemName() {
 
-        String test = "test item"; //set an item based on test
+        String test = "test"; //set an item based on test
         item.setName(test);
         String itemName = item.getItemName(); //compare test and item names
-        Assertions.assertTrue(test.equals(itemName));
+        Assertions.assertEquals(test, itemName);
     }
 
     @Test
@@ -34,32 +34,27 @@ class ItemTest {
         String testSerialNumber = "0123456789";
         item.setItemSerialNumber(testSerialNumber); //set serial number
         String itemSerialNumber = item.getItemSerialNumber(); //get the serial number
-        Assertions.assertTrue(testSerialNumber.equals(itemSerialNumber)); //compare
+        Assertions.assertEquals(testSerialNumber, itemSerialNumber); //compare
     }
 
     @Test
     void setItemSerialNumber() {
-        //same process as getserialnumber
+        //same process as getSerialnumber
 
         String testSerialNumber = "0123456789";
         item.setItemSerialNumber(testSerialNumber);
         String itemSerialNumber = item.getItemSerialNumber();
-        Assertions.assertTrue(testSerialNumber.equals(itemSerialNumber));
+        Assertions.assertEquals(testSerialNumber, itemSerialNumber);
     }
 
     @Test
     void getItemPrice() {
 
-        // getting an item value based on a item value
-        // I expect my item value will be the same as item value
-        // I first set the item value  via setValue method, then
-        // get the item value via item's getvalue  method
-        // compare if test value and item value  are equal
 
         double testValue = 10.567; //set a test price
         item.setItemPrice(testValue);
         double actualValue = item.getItemPrice();
-        Assertions.assertTrue(actualValue == testValue); //compare both prices
+        Assertions.assertEquals(actualValue, testValue); //compare both prices
 
     }
 
@@ -70,7 +65,7 @@ class ItemTest {
         double testValue = 10.567;
         item.setItemPrice(testValue);
         double actualValue = item.getItemPrice();
-        Assertions.assertTrue(actualValue == testValue);
+        Assertions.assertEquals(actualValue, testValue);
 
     }
 
@@ -85,20 +80,20 @@ class ItemTest {
     @Test
     void testToString() {
 
-        // "Name: " + itemName + "\n" + "Serial Number: " + itemSerialNumber + "\n" + "Value: " + "$" + itemValue;
+        // "Name: " + itemName + "\n" + "Serial Number: " + itemSerialNumber + "\n" + "Price: " + "$" + itemPrice;
 
         String itemName = "test";
         String itemSerialNumber = "0123456789";
-        double itemValue = 50.50;
+        double itemPrice = 10.567;
 
         item.setName(itemName);
         item.setItemSerialNumber(itemSerialNumber);
-        item.setItemPrice(itemValue);
+        item.setItemPrice(itemPrice);
 
         String test1 = "Name: " + itemName + "\n" + "Serial Number: " + itemSerialNumber +
-                "\n" + "Value: " + "$" + itemValue;
+                "\n" + "Price: " + "$" + itemPrice;
 
-        Assertions.assertTrue(test1.equals(item.toString()));
+        Assertions.assertEquals(test1, item.toString());
 
 
     }

@@ -56,7 +56,7 @@ public class ItemChecker implements Initializable {
             return;
         }
 
-        String itemSerialNumber = itemSerialNumber.getText().trim();
+        String itemSerialNumber = item.serialNumber;
 
         if(itemSerialNumber.isEmpty()){
             Tracker.showIfError("Error", "Please enter a valid serial number.");

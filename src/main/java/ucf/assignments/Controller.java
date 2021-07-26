@@ -27,11 +27,11 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     @FXML
-    private TextField name ;
+    private TextField itemName ;
     @FXML
-    private TextField serialNumber;
+    private TextField itemSerialNumber;
     @FXML
-    private TextField price;
+    private TextField itemPrice;
     @FXML
     private TextField searchItem;
 
@@ -86,7 +86,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void addItem() {
-        String description = name.getText().trim();
+        String description = itemName.getText().trim();
         if(description.isEmpty()){
             Tracker.showIfError("Error", "Please enter item name.");
             return;
@@ -97,7 +97,7 @@ public class Controller implements Initializable {
             return;
         }
 
-        String serialNumber = serialNumber.getText().trim();
+        String serialNumber = itemSerialNumber.getText().trim();
 
 
         if(serialNumber.isEmpty()){
@@ -118,7 +118,7 @@ public class Controller implements Initializable {
         }
 
         //show an error if value is not entered
-        String valueString = price.getText().trim();
+        String valueString = itemPrice.getText().trim();
         if(valueString.isEmpty()){
             Tracker.showIfError("Error", "Please enter value.");
             return;
@@ -158,9 +158,9 @@ public class Controller implements Initializable {
         dataList.add(item);
 
         //clear to enter new item
-        name.setText("");
-        serialNumber.setText("");
-        price.setText("");
+        itemName.setText("");
+        itemSerialNumber.setText("");
+        itemPrice.setText("");
     }
 
 

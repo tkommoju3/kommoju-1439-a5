@@ -77,7 +77,7 @@ class TrackerTest {
 
         boolean resultAcceptableSerialNumber = Tracker.itemSerialNumberLengthChecker(acceptableSerialNumber);
         //return true if number is 10
-        assertTrue(resultAcceptableSerialNumber);
+        assertFalse(resultAcceptableSerialNumber);
 
     }
 
