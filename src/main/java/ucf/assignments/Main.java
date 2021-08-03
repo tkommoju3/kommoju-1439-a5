@@ -27,7 +27,6 @@ public class Main extends Application {
             Scene scene = new Scene(root);
             stage.setTitle("Inventory Tracker");
             stage.setScene(scene); //attach scene to stage
-            stage.setResizable(false);
             stage.show(); //show stage
         } catch (Exception ignored) {
 
